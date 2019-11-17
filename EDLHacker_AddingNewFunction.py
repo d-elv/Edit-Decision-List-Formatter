@@ -1,5 +1,4 @@
-import os, csv, re, sys, itertools
-from csv import DictWriter
+import os, csv, re
 from timecode import Timecode
 
 def sixIndexSplitter(splitLine):
