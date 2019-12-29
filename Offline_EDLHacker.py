@@ -141,11 +141,9 @@ for (root, paths, file) in os.walk(directoryToHack):
                         reels[lineSplit[1]]['Shortest'] = lineSplit[8]
                         reels[lineSplit[1]]['Longest'] = lineSplit[8]
                         reels[lineSplit[1]]['Total'] = blankTC
-
-                        # srcTCPerLine = lineSplit[8]
-                        # srcTCPerLine = srcTCPerLine[0:11]
-                        # srcTCPerLine = FramesToTimecode.tc_to_fr(srcTCPerLine)
-                        # srcTCSum = srcTCSum + srcTCPerLine
+                        reel = lineSplit[1]
+                        reel = reel[1:-2]
+                        reels[lineSplit[1]]['Clip'] = reel
                     else:
                         reels[lineSplit[1]]['Num'] += 1
 
