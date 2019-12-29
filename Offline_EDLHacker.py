@@ -205,11 +205,12 @@ for (root, paths, file) in os.walk(directoryToHack):
                     totalTCinfr = TechnicallySecondsToTimecode.fr_to_tc(totalTCinfr)
                     reels[lineSplit[1]]['Total'] = totalTCinfr
 
-                # Write the nestedDict created in the previous for loop to the .csv file.
+                # Write the nestedDict created in the previous for loop to the open .csv file.
 
                 w = csv.DictWriter(finalFile, thirdRow)
                 w.writeheader()
                 for k in sorted(reels):
                     w.writerow({field: reels[k].get(field) or k for field in thirdRow})
                 finalFile.close()
-            else: print(name + ext + ' ignored.')
+            else:
+                print(name + ext + ' ignored.')
