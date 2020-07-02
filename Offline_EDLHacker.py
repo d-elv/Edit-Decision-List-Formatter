@@ -16,6 +16,7 @@ def sixIndexSplitter(splitLine):
     splitLine.append(str(srcDur))
     finalFileWriter.writerow(splitLine)
 
+
 def mergeDict(a, b):
     a.update(b)
     return a
@@ -66,7 +67,7 @@ for (root, paths, file) in os.walk(directoryToHack):
                 for rowItem in secondRow:
                     finalList += [str(rowItem)]
                 finalFileWriter.writerow(finalList)
-                print('Writing EDL contents of new file to final formatted file... \n')
+                print('\nWriting EDL contents of new file to final formatted file... ')
 
                 for currentClip in result:
                     splitter = str(currentClip)
@@ -74,6 +75,8 @@ for (root, paths, file) in os.walk(directoryToHack):
                     if len(splitLine) <= 6:
                         sixIndexSplitter(splitLine)
                         continue
+                    if len(splitLine) >= 9:
+                        del splitLine[4]
                     splitTimes = str(splitLine[4]).split()
                     num = splitLine[0]
                     dstIn = splitLine[6]
@@ -108,6 +111,7 @@ for (root, paths, file) in os.walk(directoryToHack):
                 print('Writing second section to formatted EDL file...')
                 finalList = []
                 finalFileWriter.writerow(finalList)
+                finalFileWriter.writerow('\n')
                 numCounter = 0
                 clipCount = []
                 reelCount = ''
@@ -129,7 +133,6 @@ for (root, paths, file) in os.walk(directoryToHack):
                 reels = {}
                 # Defined variables to be used in the nexted Dict that will track data
                 # Nested Dict that will track data. Keys and values to see what's happening.
-
                 for line in formattedLines:
                     lineSplit = str(line).split()
                     #If a clip name is not in reels Nested Dict, adds it to clip Key value, creating new dicts for each.
@@ -141,11 +144,9 @@ for (root, paths, file) in os.walk(directoryToHack):
                         reels[lineSplit[1]]['Shortest'] = lineSplit[8]
                         reels[lineSplit[1]]['Longest'] = lineSplit[8]
                         reels[lineSplit[1]]['Total'] = blankTC
-
-                        # srcTCPerLine = lineSplit[8]
-                        # srcTCPerLine = srcTCPerLine[0:11]
-                        # srcTCPerLine = FramesToTimecode.tc_to_fr(srcTCPerLine)
-                        # srcTCSum = srcTCSum + srcTCPerLine
+                        reel = lineSplit[1]
+                        reel = reel[1:-2]
+                        reels[lineSplit[1]]['Clip'] = reel
                     else:
                         reels[lineSplit[1]]['Num'] += 1
 
@@ -206,11 +207,9 @@ for (root, paths, file) in os.walk(directoryToHack):
                     reels[lineSplit[1]]['Total'] = totalTCinfr
 
                 # Write the nestedDict created in the previous for loop to the open .csv file.
-
                 w = csv.DictWriter(finalFile, thirdRow)
                 w.writeheader()
                 for k in sorted(reels):
                     w.writerow({field: reels[k].get(field) or k for field in thirdRow})
                 finalFile.close()
-            else:
-                print(name + ext + ' ignored.')
+                print(name + '_formatted' + ext + ' is your finished file')
